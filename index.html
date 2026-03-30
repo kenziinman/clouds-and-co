@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clouds & Co. — Artisanal Cloud Rentals</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --sky-light: #e8f4fd;
+      --sky-mid: #b8dff5;
+      --sky-dark: #4a9eda;
+      --gold: #f0c040;
+      --text: #2c3e50;
+      --white: #ffffff;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      overflow-x: hidden;
+      background: linear-gradient(180deg, #dceefb 0%, var(--sky-light) 40%, var(--white) 100%);
+    }
+
+    /* ---- floating clouds background ---- */
+    .cloud {
+      position: fixed;
+      background: white;
+      border-radius: 50%;
+      opacity: 0.5;
+      z-index: 0;
+      animation: drift linear infinite;
+    }
+    .cloud::before, .cloud::after {
+      content: '';
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+    }
+    .cloud-1 { width: 120px; height: 50px; top: 8%; left: -150px; animation-duration: 45s; }
+    .cloud-1::before { width: 60px; height: 60px; top: -30px; left: 20px; }
+    .cloud-1::after { width: 80px; height: 55px; top: -20px; left: 50px; }
+
+    .cloud-2 { width: 160px; height: 60px; top: 22%; left: -200px; animation-duration: 60s; animation-delay: 8s; opacity: 0.35; }
+    .cloud-2::before { width: 80px; height: 70px; top: -35px; left: 30px; }
+    .cloud-2::after { width: 100px; height: 65px; top: -25px; left: 70px; }
+
+    .cloud-3 { width: 100px; height: 40px; top: 55%; left: -130px; animation-duration: 55s; animation-delay: 15s; opacity: 0.3; }
+    .cloud-3::before { width: 50px; height: 50px; top: -25px; left: 15px; }
+    .cloud-3::after { width: 65px; height: 45px; top: -18px; left: 40px; }
+
+    @keyframes drift {
+      from { transform: translateX(0); }
+      to { transform: translateX(calc(100vw + 300px)); }
+    }
+
+    /* ---- nav ---- */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 18px 48px;
+      background: rgba(255,255,255,0.75);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem; font-weight: 700;
+    }
+    .logo span { color: var(--sky-dark); }
+    nav ul { list-style: none; display: flex; gap: 32px; }
+    nav a {
+      text-decoration: none; color: var(--text);
+      font-weight: 600; font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+    nav a:hover { color: var(--sky-dark); }
+
+    /* ---- hero ---- */
+    .hero {
+      position: relative; z-index: 1;
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center;
+      text-align: center; padding: 120px 24px 80px;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 4rem; line-height: 1.15;
+      max-width: 700px;
+    }
+    .hero h1 em {
+      font-style: italic; color: var(--sky-dark);
+    }
+    .hero p {
+      margin-top: 24px; font-size: 1.2rem;
+      max-width: 520px; line-height: 1.7;
+      color: #5a6a7a;
+    }
+    .cta {
+      margin-top: 40px;
+      padding: 16px 48px;
+      background: var(--sky-dark);
+      color: white; border: none; border-radius: 60px;
+      font-size: 1.05rem; font-weight: 600;
+      cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+    }
+    .cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(74,158,218,0.35);
+    }
+    .badge {
+      margin-top: 20px; font-size: 0.8rem; color: #8a9bae;
+    }
+
+    /* ---- section generic ---- */
+    section {
+      position: relative; z-index: 1;
+      max-width: 1100px; margin: 0 auto;
+      padding: 100px 24px;
+    }
+    section h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem; text-align: center;
+      margin-bottom: 16px;
+    }
+    section .subtitle {
+      text-align: center; color: #7a8a9a;
+      font-size: 1.05rem; margin-bottom: 60px;
+    }
+
+    /* ---- catalog cards ---- */
+    .catalog { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 32px; }
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 40px 32px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+      transition: transform 0.25s, box-shadow 0.25s;
+      text-align: center;
+    }
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+    }
+    .card-icon { font-size: 3.5rem; margin-bottom: 20px; }
+    .card h3 { font-family: 'Playfair Display', serif; font-size: 1.4rem; margin-bottom: 8px; }
+    .card .price { color: var(--sky-dark); font-weight: 700; font-size: 1.2rem; margin-bottom: 12px; }
+    .card p { color: #6a7a8a; line-height: 1.6; font-size: 0.95rem; }
+    .card .tag {
+      display: inline-block; margin-top: 16px;
+      background: var(--sky-light); color: var(--sky-dark);
+      padding: 6px 16px; border-radius: 20px;
+      font-size: 0.8rem; font-weight: 600;
+    }
+
+    /* ---- how it works ---- */
+    .steps {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 48px; text-align: center;
+    }
+    .step-num {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 56px; height: 56px;
+      background: var(--sky-dark); color: white;
+      border-radius: 50%; font-size: 1.3rem; font-weight: 700;
+      margin-bottom: 20px;
+    }
+    .steps h3 { font-size: 1.15rem; margin-bottom: 8px; }
+    .steps p { color: #6a7a8a; line-height: 1.6; font-size: 0.93rem; }
+
+    /* ---- testimonials ---- */
+    .testimonials {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(300px,1fr));
+      gap: 32px;
+    }
+    .testimonial {
+      background: white; border-radius: 20px;
+      padding: 36px 32px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.05);
+    }
+    .testimonial .stars { color: var(--gold); font-size: 1.2rem; margin-bottom: 16px; }
+    .testimonial blockquote {
+      font-style: italic; color: #5a6a7a;
+      line-height: 1.7; margin-bottom: 20px;
+    }
+    .testimonial .author { font-weight: 600; font-size: 0.9rem; }
+    .testimonial .role { font-size: 0.82rem; color: #8a9bae; }
+
+    /* ---- faq ---- */
+    .faq-list { max-width: 700px; margin: 0 auto; }
+    .faq-item {
+      border-bottom: 1px solid #e8ecf0;
+      padding: 24px 0;
+    }
+    .faq-item summary {
+      font-weight: 600; cursor: pointer;
+      font-size: 1.05rem; list-style: none;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .faq-item summary::after { content: '+'; font-size: 1.4rem; color: var(--sky-dark); }
+    .faq-item[open] summary::after { content: '-'; }
+    .faq-item p {
+      margin-top: 12px; color: #6a7a8a;
+      line-height: 1.7; font-size: 0.95rem;
+    }
+
+    /* ---- footer ---- */
+    footer {
+      position: relative; z-index: 1;
+      text-align: center; padding: 60px 24px;
+      background: var(--text); color: rgba(255,255,255,0.6);
+      font-size: 0.85rem;
+    }
+    footer .logo-foot {
+      font-family: 'Playfair Display', serif;
+      color: white; font-size: 1.3rem; margin-bottom: 12px;
+    }
+    footer a { color: rgba(255,255,255,0.8); }
+
+    /* ---- responsive ---- */
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 2.5rem; }
+      .steps { grid-template-columns: 1fr; gap: 36px; }
+      nav ul { gap: 16px; }
+      nav { padding: 14px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- floating clouds -->
+<div class="cloud cloud-1"></div>
+<div class="cloud cloud-2"></div>
+<div class="cloud cloud-3"></div>
+
+<!-- nav -->
+<nav>
+  <div class="logo"><span>Clouds</span> & Co.</div>
+  <ul>
+    <li><a href="#catalog">Catalog</a></li>
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#reviews">Reviews</a></li>
+    <li><a href="#faq">FAQ</a></li>
+  </ul>
+</nav>
+
+<!-- hero -->
+<header class="hero">
+  <h1>Rent a Cloud.<br><em>Any cloud.</em></h1>
+  <p>Hand-picked, sustainably sourced cumulus, stratus, and cirrus delivered to the sky above your location. Perfect for weddings, shade emergencies, and dramatic selfies.</p>
+  <a href="#catalog" class="cta">Browse the Sky</a>
+  <p class="badge">Trusted by 12,000+ satisfied sky-gazers worldwide</p>
+</header>
+
+<!-- catalog -->
+<section id="catalog">
+  <h2>Our Cloud Collection</h2>
+  <p class="subtitle">Each cloud is one-of-a-kind, ethically harvested from the finest atmospheres.</p>
+  <div class="catalog">
+
+    <div class="card">
+      <div class="card-icon">&#9729;</div>
+      <h3>The Gentle Cumulus</h3>
+      <div class="price">$49 / hour</div>
+      <p>Your classic fluffy white cloud. Great for picnics, outdoor yoga, and impressing your neighbors. Comes pre-shaped (bunny, dragon, or custom).</p>
+      <span class="tag">Best Seller</span>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">&#127752;</div>
+      <h3>The Dramatic Nimbus</h3>
+      <div class="price">$129 / hour</div>
+      <p>Dark, brooding, and cinematic. Includes optional thunder sound effects and a light drizzle package. Perfect for music videos and villain reveals.</p>
+      <span class="tag">Premium</span>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">&#10052;</div>
+      <h3>The Wispy Cirrus</h3>
+      <div class="price">$79 / hour</div>
+      <p>Elegant high-altitude wisps that say "I have taste." Ideal for sunset proposals, wine tastings, and existential contemplation.</p>
+      <span class="tag">Romantic</span>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">&#9889;</div>
+      <h3>The Full Storm</h3>
+      <div class="price">$299 / hour</div>
+      <p>The whole package: thunder, lightning, 40mph winds, and regret. Liability waiver required. Not available in Florida (they have enough).</p>
+      <span class="tag">Extreme</span>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">&#127774;</div>
+      <h3>The Golden Hour</h3>
+      <div class="price">$189 / hour</div>
+      <p>Strategically placed clouds that make everything look like an Instagram filter. Guaranteed to add 200+ likes to any photo.</p>
+      <span class="tag">Influencer Fave</span>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">&#127748;</div>
+      <h3>The Full Rainbow Kit</h3>
+      <div class="price">$249 / hour</div>
+      <p>Includes one rain cloud + precisely timed sunshine for a guaranteed rainbow. Double rainbow upgrade available for $75 more.</p>
+      <span class="tag">Limited Edition</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- how it works -->
+<section id="how">
+  <h2>How It Works</h2>
+  <p class="subtitle">Three simple steps between you and atmospheric bliss.</p>
+  <div class="steps">
+    <div>
+      <div class="step-num">1</div>
+      <h3>Pick Your Cloud</h3>
+      <p>Browse our curated collection. Filter by fluffiness, drama level, precipitation chance, or vibe.</p>
+    </div>
+    <div>
+      <div class="step-num">2</div>
+      <h3>Drop a Pin</h3>
+      <p>Tell us where you want your cloud. Our meteorological engineers will calculate optimal altitude and drift patterns.</p>
+    </div>
+    <div>
+      <div class="step-num">3</div>
+      <h3>Look Up</h3>
+      <p>Your cloud arrives within 2-4 hours (weather permitting, ironically). Enjoy, photograph, and tag us.</p>
+    </div>
+  </div>
+</section>
+
+<!-- testimonials -->
+<section id="reviews">
+  <h2>What Our Customers Say</h2>
+  <p class="subtitle">Real reviews from real people who rented real clouds.</p>
+  <div class="testimonials">
+
+    <div class="testimonial">
+      <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <blockquote>"Rented the Dramatic Nimbus for my wedding exit. My photographer literally cried. 11/10 would cloud again."</blockquote>
+      <div class="author">Jessica M.</div>
+      <div class="role">Bride & Cloud Enthusiast</div>
+    </div>
+
+    <div class="testimonial">
+      <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <blockquote>"I got the Full Storm for my ex's outdoor birthday party. Worth every penny. The liability waiver was a nice touch."</blockquote>
+      <div class="author">Derek T.</div>
+      <div class="role">Petty King</div>
+    </div>
+
+    <div class="testimonial">
+      <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</div>
+      <blockquote>"The Golden Hour cloud boosted my engagement rate by 340%. My followers think I moved to Santorini. I live in Ohio."</blockquote>
+      <div class="author">Priya K.</div>
+      <div class="role">Influencer, 42K Followers</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- faq -->
+<section id="faq">
+  <h2>Frequently Asked Questions</h2>
+  <p class="subtitle">Yes, this is a real service. No, we don't know how either.</p>
+  <div class="faq-list">
+
+    <details class="faq-item">
+      <summary>Can I keep the cloud?</summary>
+      <p>No. Clouds are living, breathing entities (sort of). All rentals must be returned to the atmosphere within the agreed timeframe. Extended parking fees apply at $25/hour.</p>
+    </details>
+
+    <details class="faq-item">
+      <summary>What if my cloud rains on me?</summary>
+      <p>That's a feature, not a bug. However, unscheduled precipitation is covered under our "Oops, It Poured" guarantee. We'll send a complimentary umbrella and a $10 credit.</p>
+    </details>
+
+    <details class="faq-item">
+      <summary>Do you ship internationally?</summary>
+      <p>Clouds don't respect borders, and neither do we. We deliver to 43 countries. Note: customs may inspect your cloud. This is normal and only mildly humiliating for the cloud.</p>
+    </details>
+
+    <details class="faq-item">
+      <summary>Is this real?</summary>
+      <p>We prefer the term "aspirationally real." Our legal team says we should clarify that no, you cannot actually rent a cloud. But isn't the dream beautiful?</p>
+    </details>
+
+    <details class="faq-item">
+      <summary>Can I get a cloud shaped like my face?</summary>
+      <p>Our artisan cloud sculptors can accommodate most requests. Face-shaped clouds start at $499. Results may vary based on wind conditions and how photogenic your bone structure is.</p>
+    </details>
+
+  </div>
+</section>
+
+<!-- footer -->
+<footer>
+  <div class="logo-foot">Clouds & Co.</div>
+  <p>&copy; 2026 Clouds & Co. All rights reserved. No actual clouds were harmed in the making of this website.</p>
+  <p style="margin-top:8px;">Made with love, humidity, and questionable business judgment.</p>
+</footer>
+
+</body>
+</html>
